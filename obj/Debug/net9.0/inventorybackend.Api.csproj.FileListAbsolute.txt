@@ -23,3 +23,4 @@ D:\Project\inventory-backend\inventorybackend.Api\obj\Debug\net9.0\inventoryback
 D:\Project\inventory-backend\inventorybackend.Api\obj\Debug\net9.0\ref\inventorybackend.Api.dll
 D:\Project\inventory-backend\inventorybackend.Api\obj\Debug\net9.0\inventorybackend.Api.csproj.AssemblyReference.cache
 D:\Project\inventory-backend\inventorybackend.Api\obj\Debug\net9.0\inventorybackend.Api.MvcApplicationPartsAssemblyInfo.cs
+D:\Project\inventory-backend\inventorybackend.Api\obj\Debug\net9.0\inventorybackend.Api.sourcelink.json

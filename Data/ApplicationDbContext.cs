@@ -13,6 +13,7 @@ namespace inventorybackend.Api.Data
         public DbSet<User> Users { get; set; }
         public DbSet<InventoryItem> InventoryItems { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Purchase> Purchases { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
 
@@ -34,6 +35,17 @@ namespace inventorybackend.Api.Data
                 .HasOne(p => p.Supplier)
                 .WithMany(s => s.Purchases)
                 .HasForeignKey(p => p.SupplierId);
+
+            modelBuilder.Entity<OrderItem>()
+            .HasOne(oi => oi.InventoryItem)
+            .WithMany(ii => ii.OrderItems)
+            .HasForeignKey(oi => oi.InventoryItemId);
+
+            modelBuilder.Entity<User>()
+            .HasData(new User { Id = 1, Username = "admin", Email = "admin@example.com" });
         }
+
+
     }
+
 }

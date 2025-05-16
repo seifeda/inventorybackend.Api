@@ -10,5 +10,6 @@ namespace inventorybackend.Api.Models
         public DateTime CreatedAt { get; set; }
         public DateTime? LastLogin { get; set; }
         public ICollection<Order> Orders { get; set; }
+
     }
 }
