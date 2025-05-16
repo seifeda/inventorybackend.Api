@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v9.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v9.0": {
+      "inventorybackend.Api/1.0.0": {
+        "runtime": {
+          "inventorybackend.Api.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "inventorybackend.Api/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
