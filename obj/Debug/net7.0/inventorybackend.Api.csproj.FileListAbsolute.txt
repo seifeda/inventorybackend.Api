@@ -1,0 +1,8 @@
+D:\Project\inventory-backend\inventorybackend.Api\obj\Debug\net7.0\inventorybackend.Api.csproj.AssemblyReference.cache
+D:\Project\inventory-backend\inventorybackend.Api\obj\Debug\net7.0\inventorybackend.Api.GeneratedMSBuildEditorConfig.editorconfig
+D:\Project\inventory-backend\inventorybackend.Api\obj\Debug\net7.0\inventorybackend.Api.AssemblyInfoInputs.cache
+D:\Project\inventory-backend\inventorybackend.Api\obj\Debug\net7.0\inventorybackend.Api.AssemblyInfo.cs
+D:\Project\inventory-backend\inventorybackend.Api\obj\Debug\net7.0\inventorybackend.Api.csproj.CoreCompileInputs.cache
+D:\Project\inventory-backend\inventorybackend.Api\obj\Debug\net7.0\inventorybackend.Api.MvcApplicationPartsAssemblyInfo.cs
+D:\Project\inventory-backend\inventorybackend.Api\obj\Debug\net7.0\inventorybackend.Api.MvcApplicationPartsAssemblyInfo.cache
+D:\Project\inventory-backend\inventorybackend.Api\obj\Debug\net7.0\inventorybackend.Api.sourcelink.json

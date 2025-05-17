@@ -1,9 +1,9 @@
 using inventorybackend.Api.Models;
 using inventorybackend.Api.Data;
 using Microsoft.EntityFrameworkCore;
+using inventorybackend.Api.Interfaces;
 
-
-namespace inventorybackend.Api.Repositoryies
+namespace inventorybackend.Api.Repositories
 {
     public class InventoryRepository : IInventoryRepository
     {
@@ -112,6 +112,40 @@ namespace inventorybackend.Api.Repositoryies
                 .Include(i => i.Supplier)
                 .Where(i => i.Quantity <= i.ReorderPoint && i.SupplierId == supplierId)
                 .ToListAsync();
+        }
+
+        public async Task<InventoryItem> GetBySkuAsync(string sku)
+        {
+            return await _context.InventoryItems
+                .Include(i => i.Supplier)
+                .FirstOrDefaultAsync(i => i.Sku == sku);
+        }
+
+        public async Task<InventoryItem> UpdateAsync(InventoryItem inventoryItem)
+        {
+            _context.InventoryItems.Update(inventoryItem);
+            await _context.SaveChangesAsync();
+            return inventoryItem;
+        }
+
+        public async Task<bool> ExistsAsync(int id)
+        {
+            return await _context.InventoryItems.AnyAsync(i => i.Id == id);
+        }
+
+        public async Task<bool> ExistsBySkuAsync(string sku)
+        {
+            return await _context.InventoryItems.AnyAsync(i => i.Sku == sku);
+        }
+
+        public async Task UpdateStockLevelAsync(int id, int quantity)
+        {
+            var inventoryItem = await _context.InventoryItems.FindAsync(id);
+            if (inventoryItem != null)
+            {
+                inventoryItem.QuantityInStock += quantity;
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

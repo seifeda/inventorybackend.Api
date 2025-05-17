@@ -15,6 +15,7 @@ namespace inventorybackend.Api.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Purchase> Purchases { get; set; }
+        public DbSet<PurchaseItem> PurchaseItems { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -37,12 +38,22 @@ namespace inventorybackend.Api.Data
                 .HasForeignKey(p => p.SupplierId);
 
             modelBuilder.Entity<OrderItem>()
-            .HasOne(oi => oi.InventoryItem)
-            .WithMany(ii => ii.OrderItems)
-            .HasForeignKey(oi => oi.InventoryItemId);
+                .HasOne(oi => oi.InventoryItem)
+                .WithMany(ii => ii.OrderItems)
+                .HasForeignKey(oi => oi.InventoryItemId);
+
+            modelBuilder.Entity<PurchaseItem>()
+                .HasOne(pi => pi.Purchase)
+                .WithMany(p => p.PurchaseItems)
+                .HasForeignKey(pi => pi.PurchaseId);
+
+            modelBuilder.Entity<PurchaseItem>()
+                .HasOne(pi => pi.InventoryItem)
+                .WithMany()
+                .HasForeignKey(pi => pi.InventoryItemId);
 
             modelBuilder.Entity<User>()
-            .HasData(new User { Id = 1, Username = "admin", Email = "admin@example.com" });
+                .HasData(new User { Id = 1, Username = "admin", Email = "admin@example.com" });
         }
 
 

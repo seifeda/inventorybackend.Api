@@ -1,15 +1,26 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace inventorybackend.Api.Models
 {
     public class Purchase
     {
+        [Key]
         public int Id { get; set; }
-        public string PurchaseNumber { get; set; }
+
+        [Required]
         public int SupplierId { get; set; }
-        public Supplier Supplier { get; set; }
-        public decimal TotalAmount { get; set; }
-        public string Status { get; set; }
+
+        [Required]
         public DateTime PurchaseDate { get; set; }
-        public DateTime? ReceivedDate { get; set; }
+
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal TotalAmount { get; set; }
+
+        public string Notes { get; set; }
+
+        // Navigation properties
+        public Supplier Supplier { get; set; }
         public ICollection<PurchaseItem> PurchaseItems { get; set; }
     }
 }
