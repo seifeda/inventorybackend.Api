@@ -1,6 +1,6 @@
 using inventorybackend.Api.Models;
 
-namespace inventorybackend.Api.Interfaces
+namespace inventorybackend.Api.Interfaces.Repositories
 {
     public interface IPurchaseItemRepository
     {

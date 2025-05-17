@@ -1,7 +1,7 @@
 using AutoMapper;
 using inventorybackend.Api.DTOs.Auth;
 using inventorybackend.Api.DTOs.User;
-using inventorybackend.Api.Interfaces;
+using inventorybackend.Api.Interfaces.Services;
 using inventorybackend.Api.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;

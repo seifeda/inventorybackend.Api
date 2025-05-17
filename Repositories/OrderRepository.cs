@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using inventorybackend.Api.Data;
-using inventorybackend.Api.Interfaces;
+using inventorybackend.Api.Interfaces.Repositories;
 using inventorybackend.Api.Models;
 
 namespace inventorybackend.Api.Repositories

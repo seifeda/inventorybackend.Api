@@ -1,6 +1,6 @@
 using inventorybackend.Api.DTOs.Auth;
 
-namespace inventorybackend.Api.Interfaces
+namespace inventorybackend.Api.Interfaces.Services
 {
     public interface IAuthService
     {

@@ -1,6 +1,6 @@
 using AutoMapper;
 using inventorybackend.Api.DTOs.Purchase;
-using inventorybackend.Api.Interfaces;
+using inventorybackend.Api.Interfaces.Services;
 using inventorybackend.Api.Models;
 
 namespace inventorybackend.Api.Services
