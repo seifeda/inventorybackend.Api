@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using inventorybackend.Api.DTOs.User;
-using inventorybackend.Api.Interfaces;
+using inventorybackend.Api.Interfaces.Services;
 
 namespace inventorybackend.Api.Controllers
 {

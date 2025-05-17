@@ -29,7 +29,7 @@ namespace inventorybackend.Api.DTOs.Order
     public class CreateOrderDto
     {
         [Required]
-        public int CustomerId { get; set; }
+        public int UserId { get; set; }
 
         [Required]
         public List<CreateOrderItemDto> OrderItems { get; set; }

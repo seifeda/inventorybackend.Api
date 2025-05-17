@@ -41,13 +41,13 @@ namespace inventorybackend.Api.Repositories
                 .FirstOrDefaultAsync(o => o.OrderNumber == orderNumber);
         }
 
-        public async Task<IEnumerable<Order>> GetByCustomerIdAsync(int customerId)
+        public async Task<IEnumerable<Order>> GetByCustomerIdAsync(int userId)
         {
             return await _context.Orders
                 .Include(o => o.Customer)
                 .Include(o => o.OrderItems)
                     .ThenInclude(oi => oi.InventoryItem)
-                .Where(o => o.CustomerId == customerId)
+                .Where(o => o.UserId == userId)
                 .ToListAsync();
         }
 

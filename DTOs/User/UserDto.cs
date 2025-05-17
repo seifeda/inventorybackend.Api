@@ -11,6 +11,7 @@ namespace inventorybackend.Api.DTOs.User
         public string LastName { get; set; }
         public string Role { get; set; }
         public bool IsActive { get; set; }
+        public string PasswordHash { get; set; }
     }
 
     public class CreateUserDto

@@ -1,5 +1,6 @@
 using AutoMapper;
 using inventorybackend.Api.DTOs.Inventory;
+using inventorybackend.Api.Interfaces.Repositories;
 using inventorybackend.Api.Interfaces.Services;
 using inventorybackend.Api.Models;
 using inventorybackend.Api.Repositories;

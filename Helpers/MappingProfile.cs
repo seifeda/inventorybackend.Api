@@ -15,7 +15,7 @@ namespace inventorybackend.Api.Helpers
             // PurchaseItem mappings
             CreateMap<PurchaseItem, PurchaseItemDto>()
                 .ForMember(dest => dest.InventoryItemName, opt => opt.MapFrom(src => src.InventoryItem.Name))
-                .ForMember(dest => dest.InventoryItemSku, opt => opt.MapFrom(src => src.InventoryItem.SKU));
+                .ForMember(dest => dest.InventoryItemSku, opt => opt.MapFrom(src => src.InventoryItem.Sku));
 
             CreateMap<CreatePurchaseItemDto, PurchaseItem>();
             CreateMap<UpdatePurchaseItemDto, PurchaseItem>();
@@ -29,7 +29,9 @@ namespace inventorybackend.Api.Helpers
 
             // InventoryItem mappings
             CreateMap<InventoryItem, InventoryItemDto>()
-                .ForMember(dest => dest.SupplierName, opt => opt.MapFrom(src => src.Supplier.Name));
+                .ForMember(dest => dest.SupplierName, opt => opt.MapFrom(src => src.Supplier.Name))
+                .ForMember(dest => dest.Sku, opt => opt.MapFrom(src => src.Sku))
+                .ForMember(dest => dest.QuantityInStock, opt => opt.MapFrom(src => src.QuantityInStock));
 
             CreateMap<CreateInventoryItemDto, InventoryItem>();
             CreateMap<UpdateInventoryItemDto, InventoryItem>();
@@ -40,7 +42,7 @@ namespace inventorybackend.Api.Helpers
 
             CreateMap<OrderItem, OrderItemDto>()
                 .ForMember(dest => dest.InventoryItemName, opt => opt.MapFrom(src => src.InventoryItem.Name))
-                .ForMember(dest => dest.InventoryItemSku, opt => opt.MapFrom(src => src.InventoryItem.SKU));
+                .ForMember(dest => dest.InventoryItemSku, opt => opt.MapFrom(src => src.InventoryItem.Sku));
 
             CreateMap<CreateOrderDto, Order>();
             CreateMap<CreateOrderItemDto, OrderItem>();
