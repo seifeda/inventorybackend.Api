@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using inventorybackend.Api.Models;
+using System.Collections.Generic;
 
 namespace inventorybackend.Api.Data
 {
@@ -52,8 +53,21 @@ namespace inventorybackend.Api.Data
                 .WithMany()
                 .HasForeignKey(pi => pi.InventoryItemId);
 
-            modelBuilder.Entity<User>()
-                .HasData(new User { Id = 1, Username = "admin", Email = "admin@example.com" });
+            modelBuilder.Entity<User>().HasData(
+                new User
+                {
+                    Id = 1,
+                    Username = "admin",
+                    Email = "admin@example.com",
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123"),
+                    Role = "Admin",
+                    FirstName = "Admin",
+                    LastName = "User",
+                    IsActive = true,
+                    CreatedAt = DateTime.UtcNow,
+                    Orders = new List<Order>()
+                }
+            );
         }
 
 

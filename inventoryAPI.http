@@ -1,0 +1,245 @@
+@baseUrl = http://localhost:5282
+@authToken = your_jwt_token_here
+
+### Authentication ###
+
+# Register
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+    "username": "newuser",
+    "email": "newuser@example.com",
+    "password": "NewUser123!",
+    "confirmPassword": "NewUser123!",
+    "firstName": "New",
+    "lastName": "User"
+}
+
+# Login
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+    "username": "newuser",
+    "password": "NewUser123!"
+}
+
+### Validate Token
+POST {{baseUrl}}/api/auth/validate-token
+Content-Type: application/json
+
+"your-jwt-token-here"
+
+### Users ###
+
+# Get all users
+GET {{baseUrl}}/api/users
+Authorization: Bearer {{authToken}}
+
+# Get user by ID
+GET {{baseUrl}}/api/users/1
+Authorization: Bearer {{authToken}}
+
+# Create user
+POST {{baseUrl}}/api/users
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+    "username": "new_user",
+    "email": "user@example.com",
+    "password": "password123",
+    "firstName": "John",
+    "lastName": "Doe",
+    "role": "User"
+}
+
+# Update user
+PUT {{baseUrl}}/api/users/1
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+    "username": "updated_user",
+    "email": "updated@example.com",
+    "firstName": "John",
+    "lastName": "Doe",
+    "role": "User"
+}
+
+# Delete user
+DELETE {{baseUrl}}/api/users/1
+Authorization: Bearer {{authToken}}
+
+### Inventory ###
+
+# Get all inventory items
+GET {{baseUrl}}/api/inventory
+Authorization: Bearer {{authToken}}
+
+# Get inventory item by ID
+GET {{baseUrl}}/api/inventory/1
+Authorization: Bearer {{authToken}}
+
+# Create inventory item
+POST {{baseUrl}}/api/inventory
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+    "sku": "ITEM001",
+    "name": "Test Item",
+    "description": "Test Description",
+    "quantity": 100,
+    "costPrice": 10.99,
+    "sellingPrice": 19.99,
+    "reorderPoint": 20,
+    "supplierId": 1
+}
+
+# Update inventory item
+PUT {{baseUrl}}/api/inventory/1
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+    "sku": "ITEM001",
+    "name": "Updated Item",
+    "description": "Updated Description",
+    "quantity": 150,
+    "costPrice": 11.99,
+    "sellingPrice": 21.99,
+    "reorderPoint": 25,
+    "supplierId": 1
+}
+
+# Delete inventory item
+DELETE {{baseUrl}}/api/inventory/1
+Authorization: Bearer {{authToken}}
+
+### Orders ###
+
+# Get all orders
+GET {{baseUrl}}/api/orders
+Authorization: Bearer {{authToken}}
+
+# Get order by ID
+GET {{baseUrl}}/api/orders/1
+Authorization: Bearer {{authToken}}
+
+# Create order
+POST {{baseUrl}}/api/orders
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+    "userId": 1,
+    "orderItems": [
+        {
+            "inventoryItemId": 1,
+            "quantity": 2
+        }
+    ]
+}
+
+# Update order status
+PUT {{baseUrl}}/api/orders/1/status
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+    "status": "Processing"
+}
+
+# Delete order
+DELETE {{baseUrl}}/api/orders/1
+Authorization: Bearer {{authToken}}
+
+### Suppliers ###
+
+# Get all suppliers
+GET {{baseUrl}}/api/suppliers
+Authorization: Bearer {{authToken}}
+
+# Get supplier by ID
+GET {{baseUrl}}/api/suppliers/1
+Authorization: Bearer {{authToken}}
+
+# Create supplier
+POST {{baseUrl}}/api/suppliers
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+    "name": "Test Supplier",
+    "contactPerson": "John Doe",
+    "email": "supplier@example.com",
+    "phone": "1234567890",
+    "address": "123 Supplier St"
+}
+
+# Update supplier
+PUT {{baseUrl}}/api/suppliers/1
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+    "name": "Updated Supplier",
+    "contactPerson": "Jane Doe",
+    "email": "updated@example.com",
+    "phone": "0987654321",
+    "address": "456 Supplier Ave"
+}
+
+# Delete supplier
+DELETE {{baseUrl}}/api/suppliers/1
+Authorization: Bearer {{authToken}}
+
+### Purchases ###
+
+# Get all purchases
+GET {{baseUrl}}/api/purchases
+Authorization: Bearer {{authToken}}
+
+# Get purchase by ID
+GET {{baseUrl}}/api/purchases/1
+Authorization: Bearer {{authToken}}
+
+# Create purchase
+POST {{baseUrl}}/api/purchases
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+    "supplierId": 1,
+    "purchaseItems": [
+        {
+            "inventoryItemId": 1,
+            "quantity": 10,
+            "unitPrice": 9.99
+        }
+    ],
+    "notes": "Test purchase"
+}
+
+# Update purchase
+PUT {{baseUrl}}/api/purchases/1
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+    "supplierId": 1,
+    "purchaseItems": [
+        {
+            "inventoryItemId": 1,
+            "quantity": 15,
+            "unitPrice": 10.99
+        }
+    ],
+    "notes": "Updated purchase"
+}
+
+# Delete purchase
+DELETE {{baseUrl}}/api/purchases/1
+Authorization: Bearer {{authToken}} 

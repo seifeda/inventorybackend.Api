@@ -16,7 +16,8 @@ namespace inventorybackend.Api.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<AuthResponseDto>> Login(LoginDto loginDto)
+        [Consumes("application/json")]
+        public async Task<ActionResult<AuthResponseDto>> Login([FromBody] LoginDto loginDto)
         {
             try
             {
@@ -30,7 +31,8 @@ namespace inventorybackend.Api.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<AuthResponseDto>> Register(RegisterDto registerDto)
+        [Consumes("application/json")]
+        public async Task<ActionResult<AuthResponseDto>> Register([FromBody] RegisterDto registerDto)
         {
             try
             {

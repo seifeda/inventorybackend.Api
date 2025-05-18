@@ -25,20 +25,26 @@ namespace inventorybackend.Api.Repositories
 
         public async Task<Order> GetByIdAsync(int id)
         {
-            return await _context.Orders
+            var order = await _context.Orders
                 .Include(o => o.Customer)
                 .Include(o => o.OrderItems)
                     .ThenInclude(oi => oi.InventoryItem)
                 .FirstOrDefaultAsync(o => o.Id == id);
+            if (order == null)
+                throw new InvalidOperationException($"Order with ID {id} not found.");
+            return order;
         }
 
         public async Task<Order> GetByOrderNumberAsync(string orderNumber)
         {
-            return await _context.Orders
+            var order = await _context.Orders
                 .Include(o => o.Customer)
                 .Include(o => o.OrderItems)
                     .ThenInclude(oi => oi.InventoryItem)
                 .FirstOrDefaultAsync(o => o.OrderNumber == orderNumber);
+            if (order == null)
+                throw new InvalidOperationException($"Order with number {orderNumber} not found.");
+            return order;
         }
 
         public async Task<IEnumerable<Order>> GetByCustomerIdAsync(int userId)

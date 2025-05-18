@@ -116,9 +116,12 @@ namespace inventorybackend.Api.Repositories
 
         public async Task<InventoryItem> GetBySkuAsync(string sku)
         {
-            return await _context.InventoryItems
+            var item = await _context.InventoryItems
                 .Include(i => i.Supplier)
                 .FirstOrDefaultAsync(i => i.Sku == sku);
+            if (item == null)
+                throw new InvalidOperationException($"InventoryItem with SKU {sku} not found.");
+            return item;
         }
 
         public async Task<InventoryItem> UpdateAsync(InventoryItem inventoryItem)

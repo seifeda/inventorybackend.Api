@@ -25,11 +25,14 @@ namespace inventorybackend.Api.Repositories
 
         public async Task<Purchase> GetByIdAsync(int id)
         {
-            return await _context.Purchases
+            var purchase = await _context.Purchases
                 .Include(p => p.Supplier)
                 .Include(p => p.PurchaseItems)
                     .ThenInclude(pi => pi.InventoryItem)
                 .FirstOrDefaultAsync(p => p.Id == id);
+            if (purchase == null)
+                throw new InvalidOperationException($"Purchase with ID {id} not found.");
+            return purchase;
         }
 
         public async Task<Purchase> CreateAsync(Purchase purchase)
