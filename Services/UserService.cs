@@ -5,6 +5,7 @@ using inventorybackend.Api.Interfaces.Services;
 using inventorybackend.Api.Models;
 using System.Security.Cryptography;
 using System.Text;
+using BCrypt.Net;
 
 namespace inventorybackend.Api.Services
 {
@@ -142,11 +143,7 @@ namespace inventorybackend.Api.Services
 
         private string HashPassword(string password)
         {
-            using (var sha256 = SHA256.Create())
-            {
-                var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-                return Convert.ToBase64String(hashedBytes);
-            }
+            return BCrypt.Net.BCrypt.HashPassword(password);
         }
     }
 }

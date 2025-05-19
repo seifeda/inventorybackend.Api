@@ -18,6 +18,8 @@ namespace inventorybackend.Api.Data
         public DbSet<Purchase> Purchases { get; set; }
         public DbSet<PurchaseItem> PurchaseItems { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<Sale> Sales { get; set; }
+        public DbSet<SaleItem> SaleItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -52,6 +54,16 @@ namespace inventorybackend.Api.Data
                 .HasOne(pi => pi.InventoryItem)
                 .WithMany()
                 .HasForeignKey(pi => pi.InventoryItemId);
+
+            modelBuilder.Entity<SaleItem>()
+                .HasOne(si => si.Sale)
+                .WithMany(s => s.SaleItems)
+                .HasForeignKey(si => si.SaleId);
+
+            modelBuilder.Entity<SaleItem>()
+                .HasOne(si => si.InventoryItem)
+                .WithMany()
+                .HasForeignKey(si => si.InventoryItemId);
 
             modelBuilder.Entity<User>().HasData(
                 new User

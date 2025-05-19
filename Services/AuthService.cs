@@ -32,8 +32,7 @@ namespace inventorybackend.Api.Services
                 throw new InvalidOperationException("Invalid username or password.");
             }
 
-            var hashedPassword = HashPassword(loginDto.Password);
-            if (user.PasswordHash != hashedPassword)
+            if (!BCrypt.Net.BCrypt.Verify(loginDto.Password, user.PasswordHash))
             {
                 throw new InvalidOperationException("Invalid username or password.");
             }
@@ -134,11 +133,7 @@ namespace inventorybackend.Api.Services
 
         private string HashPassword(string password)
         {
-            using (var sha256 = System.Security.Cryptography.SHA256.Create())
-            {
-                var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-                return Convert.ToBase64String(hashedBytes);
-            }
+            return BCrypt.Net.BCrypt.HashPassword(password);
         }
     }
 } 

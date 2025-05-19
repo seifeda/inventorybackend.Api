@@ -3,18 +3,19 @@
 
 ### Authentication ###
 
-# Register
-POST {{baseUrl}}/api/auth/register
+# RegisterPOST http://localhost:5000/api/auth/register
+POST http://localhost:5282/api/auth/register
 Content-Type: application/json
 
 {
-    "username": "newuser",
-    "email": "newuser@example.com",
-    "password": "NewUser123!",
-    "confirmPassword": "NewUser123!",
-    "firstName": "New",
-    "lastName": "User"
+  "username": "Admin1",
+  "email": "Admin1@example.com",
+  "password": "123456789",
+  "confirmPassword": "123456789!",
+  "firstName": "Seife",
+  "lastName": "Bekele"
 }
+
 
 # Login
 POST {{baseUrl}}/api/auth/login
