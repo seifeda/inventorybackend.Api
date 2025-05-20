@@ -2,17 +2,19 @@ namespace inventorybackend.Api.DTOs.Sales
 {
     public class SalesReportDto
     {
-        public int TotalSales { get; set; }
-        public decimal TotalRevenue { get; set; }
-        public decimal AverageOrderValue { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public decimal TotalSales { get; set; }
+        public int TotalTransactions { get; set; }
+        public decimal AverageTransactionValue { get; set; }
         public List<TopSellingItemDto> TopSellingItems { get; set; } = new();
         public List<SalesByPaymentMethodDto> SalesByPaymentMethod { get; set; } = new();
-        public List<SalesByDateDto> SalesByDate { get; set; } = new();
+        public List<SalesByDayDto> SalesByDay { get; set; } = new();
     }
 
     public class TopSellingItemDto
     {
-        public int ItemId { get; set; }
+        public int InventoryItemId { get; set; }
         public string ItemName { get; set; } = string.Empty;
         public int QuantitySold { get; set; }
         public decimal TotalRevenue { get; set; }
@@ -21,14 +23,14 @@ namespace inventorybackend.Api.DTOs.Sales
     public class SalesByPaymentMethodDto
     {
         public string PaymentMethod { get; set; } = string.Empty;
-        public int Count { get; set; }
+        public int TransactionCount { get; set; }
         public decimal TotalAmount { get; set; }
     }
 
-    public class SalesByDateDto
+    public class SalesByDayDto
     {
         public DateTime Date { get; set; }
-        public int TotalSales { get; set; }
-        public decimal TotalRevenue { get; set; }
+        public decimal TotalAmount { get; set; }
+        public int TransactionCount { get; set; }
     }
 } 
