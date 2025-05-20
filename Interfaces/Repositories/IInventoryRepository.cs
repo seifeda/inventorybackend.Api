@@ -5,7 +5,7 @@ namespace inventorybackend.Api.Interfaces.Repositories
     public interface IInventoryRepository
     {
         Task<IEnumerable<InventoryItem>> GetAllAsync();
-        Task<InventoryItem> GetByIdAsync(int id);
+        Task<InventoryItem?> GetByIdAsync(int id);
         Task<InventoryItem> GetBySkuAsync(string sku);
         Task<IEnumerable<InventoryItem>> GetLowStockItemsAsync();
         Task<InventoryItem> CreateAsync(InventoryItem inventoryItem);
@@ -15,4 +15,4 @@ namespace inventorybackend.Api.Interfaces.Repositories
         Task<bool> ExistsBySkuAsync(string sku);
         Task UpdateStockLevelAsync(int id, int quantity);
     }
-} 
+}

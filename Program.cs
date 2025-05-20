@@ -105,9 +105,7 @@ builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();
 builder.Services.AddScoped<ISupplierService, SupplierService>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
-builder.Services.AddScoped<ISaleRepository, SaleRepository>();
-builder.Services.AddScoped<ISaleService, SaleService>();
-builder.Services.AddScoped<ISalesService, SalesService>();
+
 
 var app = builder.Build();
 
