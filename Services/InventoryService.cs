@@ -58,6 +58,7 @@ namespace inventorybackend.Api.Services
             }
 
             var inventoryItem = _mapper.Map<InventoryItem>(createDto);
+            inventoryItem.Status = "Active"; // Set default status
             var createdItem = await _repository.CreateAsync(inventoryItem);
             return _mapper.Map<InventoryItemDto>(createdItem);
         }

@@ -17,18 +17,18 @@ namespace inventorybackend.Api.Repositories
         public async Task<IEnumerable<Order>> GetAllAsync()
         {
             return await _context.Orders
-                .Include(o => o.Customer)
                 .Include(o => o.OrderItems)
                     .ThenInclude(oi => oi.InventoryItem)
+                .Include(o => o.User)
                 .ToListAsync();
         }
 
         public async Task<Order> GetByIdAsync(int id)
         {
             var order = await _context.Orders
-                .Include(o => o.Customer)
                 .Include(o => o.OrderItems)
                     .ThenInclude(oi => oi.InventoryItem)
+                .Include(o => o.User)
                 .FirstOrDefaultAsync(o => o.Id == id);
             if (order == null)
                 throw new InvalidOperationException($"Order with ID {id} not found.");
@@ -38,9 +38,9 @@ namespace inventorybackend.Api.Repositories
         public async Task<Order> GetByOrderNumberAsync(string orderNumber)
         {
             var order = await _context.Orders
-                .Include(o => o.Customer)
                 .Include(o => o.OrderItems)
                     .ThenInclude(oi => oi.InventoryItem)
+                .Include(o => o.User)
                 .FirstOrDefaultAsync(o => o.OrderNumber == orderNumber);
             if (order == null)
                 throw new InvalidOperationException($"Order with number {orderNumber} not found.");
@@ -50,9 +50,9 @@ namespace inventorybackend.Api.Repositories
         public async Task<IEnumerable<Order>> GetByCustomerIdAsync(int userId)
         {
             return await _context.Orders
-                .Include(o => o.Customer)
                 .Include(o => o.OrderItems)
                     .ThenInclude(oi => oi.InventoryItem)
+                .Include(o => o.User)
                 .Where(o => o.UserId == userId)
                 .ToListAsync();
         }
@@ -60,9 +60,9 @@ namespace inventorybackend.Api.Repositories
         public async Task<IEnumerable<Order>> GetByStatusAsync(string status)
         {
             return await _context.Orders
-                .Include(o => o.Customer)
                 .Include(o => o.OrderItems)
                     .ThenInclude(oi => oi.InventoryItem)
+                .Include(o => o.User)
                 .Where(o => o.Status == status)
                 .ToListAsync();
         }
