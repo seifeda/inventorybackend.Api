@@ -1,7 +1,11 @@
-using inventorybackend.Api.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using inventorybackend.Api.Data;
-using Microsoft.EntityFrameworkCore;
 using inventorybackend.Api.Interfaces.Repositories;
+using inventorybackend.Api.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace inventorybackend.Api.Repositories
 {
@@ -11,10 +15,9 @@ namespace inventorybackend.Api.Repositories
 
         public InventoryRepository(ApplicationDbContext context)
         {
-            _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        // Existing method, mapped to interface
         public async Task<IEnumerable<InventoryItem>> GetAllAsync()
         {
             return await _context.InventoryItems
@@ -22,55 +25,66 @@ namespace inventorybackend.Api.Repositories
                 .ToListAsync();
         }
 
-        // Interface method: GetAllItemsAsync
-        public async Task<IEnumerable<InventoryItem>> GetAllItemsAsync()
+        public async Task<InventoryItem> GetByIdAsync(int id)
         {
-            return await GetAllAsync();
+            var item = await _context.InventoryItems
+                .Include(i => i.Supplier)
+                .FirstOrDefaultAsync(i => i.Id == id);
+            
+            if (item == null)
+            {
+                throw new KeyNotFoundException($"Inventory item with ID {id} not found.");
+            }
+            
+            return item;
         }
 
-        // Existing method, mapped to interface
-        public async Task<InventoryItem?> GetByIdAsync(int id)
+        public async Task<InventoryItem> GetBySkuAsync(string sku)
+        {
+            var item = await _context.InventoryItems
+                .Include(i => i.Supplier)
+                .FirstOrDefaultAsync(i => i.Sku == sku);
+            
+            if (item == null)
+            {
+                throw new KeyNotFoundException($"Inventory item with SKU {sku} not found.");
+            }
+            
+            return item;
+        }
+
+        public async Task<IEnumerable<InventoryItem>> GetLowStockItemsAsync()
         {
             return await _context.InventoryItems
                 .Include(i => i.Supplier)
-                .FirstOrDefaultAsync(i => i.Id == id);
+                .Where(i => i.QuantityInStock <= i.ReorderPoint)
+                .ToListAsync();
         }
 
-        // Interface method: GetItemByIdAsync
-        public async Task<InventoryItem> GetItemByIdAsync(int id)
-        {
-            var item = await GetByIdAsync(id);
-            if (item == null)
-                throw new InvalidOperationException($"InventoryItem with id {id} not found.");
-            return item;
-        }
-
-        // Existing method, mapped to interface
         public async Task<InventoryItem> CreateAsync(InventoryItem item)
         {
-            _context.InventoryItems.Add(item);
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
+            await _context.InventoryItems.AddAsync(item);
             await _context.SaveChangesAsync();
             return item;
         }
 
-        // Interface method: AddItemAsync
-        public async Task AddItemAsync(InventoryItem item)
+        public async Task<InventoryItem> UpdateAsync(InventoryItem item)
         {
-            await CreateAsync(item);
-        }
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
 
-        // Interface method: UpdateItemAsync
-        public async Task UpdateItemAsync(InventoryItem item)
-        {
-            var existingItem = await _context.InventoryItems.FindAsync(item.Id);
-            if (existingItem == null)
-                return;
-
-            _context.Entry(existingItem).CurrentValues.SetValues(item);
+            _context.Entry(item).State = EntityState.Modified;
             await _context.SaveChangesAsync();
+            return item;
         }
 
-        // Existing method, mapped to interface
         public async Task DeleteAsync(int id)
         {
             var item = await _context.InventoryItems.FindAsync(id);
@@ -79,56 +93,6 @@ namespace inventorybackend.Api.Repositories
                 _context.InventoryItems.Remove(item);
                 await _context.SaveChangesAsync();
             }
-        }
-
-        // Interface method: DeleteItemAsync
-        public async Task DeleteItemAsync(int id)
-        {
-            await DeleteAsync(id);
-        }
-
-        // Interface method: GetItemsBySupplierIdAsync
-        public async Task<IEnumerable<InventoryItem>> GetItemsBySupplierIdAsync(int supplierId)
-        {
-            return await _context.InventoryItems
-                .Include(i => i.Supplier)
-                .Where(i => i.SupplierId == supplierId)
-                .ToListAsync();
-        }
-
-        // Existing method, mapped to interface
-        public async Task<IEnumerable<InventoryItem>> GetLowStockItemsAsync()
-        {
-            return await _context.InventoryItems
-                .Include(i => i.Supplier)
-                .Where(i => i.Quantity <= i.ReorderPoint)
-                .ToListAsync();
-        }
-
-        // Interface method: GetLowStockItemsAsync(int supplierId)
-        public async Task<IEnumerable<InventoryItem>> GetLowStockItemsAsync(int supplierId)
-        {
-            return await _context.InventoryItems
-                .Include(i => i.Supplier)
-                .Where(i => i.Quantity <= i.ReorderPoint && i.SupplierId == supplierId)
-                .ToListAsync();
-        }
-
-        public async Task<InventoryItem> GetBySkuAsync(string sku)
-        {
-            var item = await _context.InventoryItems
-                .Include(i => i.Supplier)
-                .FirstOrDefaultAsync(i => i.Sku == sku);
-            if (item == null)
-                throw new InvalidOperationException($"InventoryItem with SKU {sku} not found.");
-            return item;
-        }
-
-        public async Task<InventoryItem> UpdateAsync(InventoryItem inventoryItem)
-        {
-            _context.InventoryItems.Update(inventoryItem);
-            await _context.SaveChangesAsync();
-            return inventoryItem;
         }
 
         public async Task<bool> ExistsAsync(int id)
@@ -143,12 +107,10 @@ namespace inventorybackend.Api.Repositories
 
         public async Task UpdateStockLevelAsync(int id, int quantity)
         {
-            var inventoryItem = await _context.InventoryItems.FindAsync(id);
-            if (inventoryItem != null)
-            {
-                inventoryItem.QuantityInStock += quantity;
-                await _context.SaveChangesAsync();
-            }
+            var item = await GetByIdAsync(id);
+            item.QuantityInStock += quantity;
+            item.UpdatedAt = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
         }
     }
 }

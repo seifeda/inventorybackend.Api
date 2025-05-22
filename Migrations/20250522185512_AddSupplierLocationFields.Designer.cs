@@ -12,8 +12,8 @@ using inventorybackend.Api.Data;
 namespace inventorybackend.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250519092112_AddSalesModels")]
-    partial class AddSalesModels
+    [Migration("20250522185512_AddSupplierLocationFields")]
+    partial class AddSupplierLocationFields
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -301,7 +301,15 @@ namespace inventorybackend.Api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("ContactPerson")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Country")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -317,6 +325,10 @@ namespace inventorybackend.Api.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PostalCode")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -374,12 +386,12 @@ namespace inventorybackend.Api.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 5, 19, 9, 21, 11, 800, DateTimeKind.Utc).AddTicks(5365),
+                            CreatedAt = new DateTime(2025, 5, 22, 18, 55, 12, 399, DateTimeKind.Utc).AddTicks(8251),
                             Email = "admin@example.com",
                             FirstName = "Admin",
                             IsActive = true,
                             LastName = "User",
-                            PasswordHash = "$2a$11$VmrRehNMNuD/kn1EvHtI4eJiNr9X1y7oKAy20rG1XGsEknMpfN1by",
+                            PasswordHash = "$2a$11$mCfa0i2hp7ecrRSOLf7QlOq6EdyiH7AgjNjwKxHNzcORLylk8hijm",
                             Role = "Admin",
                             Username = "admin"
                         });

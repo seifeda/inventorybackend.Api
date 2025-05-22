@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using inventorybackend.Api.DTOs.Inventory;
 
 namespace inventorybackend.Api.Interfaces.Services
@@ -6,11 +8,11 @@ namespace inventorybackend.Api.Interfaces.Services
     {
         Task<IEnumerable<InventoryItemDto>> GetAllAsync();
         Task<InventoryItemDto> GetByIdAsync(int id);
+        Task<InventoryItemDto> CreateAsync(CreateInventoryDto createDto);
+        Task<InventoryItemDto> UpdateAsync(int id, UpdateInventoryDto updateDto);
+        Task DeleteAsync(int id);
         Task<InventoryItemDto> GetBySkuAsync(string sku);
         Task<IEnumerable<InventoryItemDto>> GetLowStockItemsAsync();
-        Task<InventoryItemDto> CreateAsync(CreateInventoryItemDto createDto);
-        Task<InventoryItemDto> UpdateAsync(int id, UpdateInventoryItemDto updateDto);
-        Task DeleteAsync(int id);
         Task UpdateStockLevelAsync(int id, int quantity);
     }
-} 
+}

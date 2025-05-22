@@ -28,13 +28,40 @@ namespace inventorybackend.Api.Helpers
             CreateMap<UpdatePurchaseDto, Purchase>();
 
             // InventoryItem mappings
-            CreateMap<InventoryItem, InventoryItemDto>()
-                .ForMember(dest => dest.SupplierName, opt => opt.MapFrom(src => src.Supplier.Name))
+            CreateMap<CreateInventoryDto, InventoryItem>()
                 .ForMember(dest => dest.Sku, opt => opt.MapFrom(src => src.Sku))
-                .ForMember(dest => dest.QuantityInStock, opt => opt.MapFrom(src => src.QuantityInStock));
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+                .ForMember(dest => dest.CostPrice, opt => opt.MapFrom(src => src.CostPrice))
+                .ForMember(dest => dest.SellingPrice, opt => opt.MapFrom(src => src.SellingPrice))
+                .ForMember(dest => dest.QuantityInStock, opt => opt.MapFrom(src => src.QuantityInStock))
+                .ForMember(dest => dest.ReorderPoint, opt => opt.MapFrom(src => src.ReorderPoint))
+                .ForMember(dest => dest.SupplierId, opt => opt.MapFrom(src => src.SupplierId));
 
-            CreateMap<CreateInventoryItemDto, InventoryItem>();
-            CreateMap<UpdateInventoryItemDto, InventoryItem>();
+            CreateMap<UpdateInventoryDto, InventoryItem>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.Sku, opt => opt.MapFrom(src => src.Sku))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+                .ForMember(dest => dest.CostPrice, opt => opt.MapFrom(src => src.CostPrice))
+                .ForMember(dest => dest.SellingPrice, opt => opt.MapFrom(src => src.SellingPrice))
+                .ForMember(dest => dest.QuantityInStock, opt => opt.MapFrom(src => src.QuantityInStock))
+                .ForMember(dest => dest.ReorderPoint, opt => opt.MapFrom(src => src.ReorderPoint))
+                .ForMember(dest => dest.SupplierId, opt => opt.MapFrom(src => src.SupplierId));
+
+            CreateMap<InventoryItem, InventoryItemDto>()
+                .ForMember(dest => dest.Sku, opt => opt.MapFrom(src => src.Sku))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+                .ForMember(dest => dest.QuantityInStock, opt => opt.MapFrom(src => src.QuantityInStock))
+                .ForMember(dest => dest.UnitPrice, opt => opt.MapFrom(src => src.CostPrice))
+                .ForMember(dest => dest.SellingPrice, opt => opt.MapFrom(src => src.SellingPrice))
+                .ForMember(dest => dest.MinimumStockLevel, opt => opt.MapFrom(src => src.ReorderPoint))
+                .ForMember(dest => dest.SupplierId, opt => opt.MapFrom(src => src.SupplierId))
+                .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
+                .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt))
+                .ForMember(dest => dest.SupplierName, opt => opt.MapFrom(src => src.Supplier.Name))
+                .ForMember(dest => dest.SupplierContact, opt => opt.MapFrom(src => src.Supplier.ContactPerson));
 
             // Order mappings
             CreateMap<Order, OrderDto>()
@@ -45,7 +72,7 @@ namespace inventorybackend.Api.Helpers
                 .ForMember(dest => dest.InventoryItemSku, opt => opt.MapFrom(src => src.InventoryItem.Sku));
 
             CreateMap<CreateOrderDto, Order>();
-            CreateMap<CreateOrderItemDto, OrderItem>();
+            CreateMap<CreateOrderDto, OrderItem>();
             CreateMap<UpdateOrderDto, Order>();
 
             // Supplier mappings
@@ -59,4 +86,4 @@ namespace inventorybackend.Api.Helpers
             CreateMap<UpdateUserDto, User>();
         }
     }
-} 
+}

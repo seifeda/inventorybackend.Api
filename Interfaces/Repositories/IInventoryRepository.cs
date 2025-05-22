@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using inventorybackend.Api.Models;
 
 namespace inventorybackend.Api.Interfaces.Repositories
@@ -5,7 +7,7 @@ namespace inventorybackend.Api.Interfaces.Repositories
     public interface IInventoryRepository
     {
         Task<IEnumerable<InventoryItem>> GetAllAsync();
-        Task<InventoryItem?> GetByIdAsync(int id);
+        Task<InventoryItem> GetByIdAsync(int id);
         Task<InventoryItem> GetBySkuAsync(string sku);
         Task<IEnumerable<InventoryItem>> GetLowStockItemsAsync();
         Task<InventoryItem> CreateAsync(InventoryItem inventoryItem);

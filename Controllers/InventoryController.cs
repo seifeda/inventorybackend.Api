@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using inventorybackend.Api.DTOs.Inventory;
 using inventorybackend.Api.Interfaces.Services;
+using inventorybackend.Api.Helpers;
 
 namespace inventorybackend.Api.Controllers
 {
@@ -16,104 +17,72 @@ namespace inventorybackend.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<InventoryItemDto>>> GetAll()
+        public async Task<ActionResult<ApiResponse<IEnumerable<InventoryItemDto>>>> GetAll()
         {
-            var inventoryItems = await _inventoryService.GetAllAsync();
-            return Ok(inventoryItems);
+            var items = await _inventoryService.GetAllAsync();
+            return Ok(new ApiResponse<IEnumerable<InventoryItemDto>> { Data = items });
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<InventoryItemDto>> GetById(int id)
+        public async Task<ActionResult<ApiResponse<InventoryItemDto>>> GetById(int id)
         {
-            try
-            {
-                var inventoryItem = await _inventoryService.GetByIdAsync(id);
-                return Ok(inventoryItem);
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound();
-            }
+            var item = await _inventoryService.GetByIdAsync(id);
+            return Ok(new ApiResponse<InventoryItemDto> { Data = item });
         }
 
         [HttpGet("sku/{sku}")]
-        public async Task<ActionResult<InventoryItemDto>> GetBySku(string sku)
+        public async Task<ActionResult<ApiResponse<InventoryItemDto>>> GetBySku(string sku)
         {
             try
             {
-                var inventoryItem = await _inventoryService.GetBySkuAsync(sku);
-                return Ok(inventoryItem);
+                var item = await _inventoryService.GetBySkuAsync(sku);
+                return Ok(new ApiResponse<InventoryItemDto> { Data = item });
             }
             catch (KeyNotFoundException)
             {
-                return NotFound();
+                return NotFound(new ApiResponse<InventoryItemDto> { Success = false, Message = "Item not found" });
             }
         }
 
         [HttpGet("low-stock")]
-        public async Task<ActionResult<IEnumerable<InventoryItemDto>>> GetLowStockItems()
+        public async Task<ActionResult<ApiResponse<IEnumerable<InventoryItemDto>>>> GetLowStockItems()
         {
-            var lowStockItems = await _inventoryService.GetLowStockItemsAsync();
-            return Ok(lowStockItems);
+            var items = await _inventoryService.GetLowStockItemsAsync();
+            return Ok(new ApiResponse<IEnumerable<InventoryItemDto>> { Data = items });
         }
 
         [HttpPost]
-        public async Task<ActionResult<InventoryItemDto>> Create(CreateInventoryItemDto createDto)
+        public async Task<ActionResult<ApiResponse<InventoryItemDto>>> Create(CreateInventoryDto createDto)
         {
-            try
-            {
-                var inventoryItem = await _inventoryService.CreateAsync(createDto);
-                return CreatedAtAction(nameof(GetById), new { id = inventoryItem.Id }, inventoryItem);
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var item = await _inventoryService.CreateAsync(createDto);
+            return CreatedAtAction(nameof(GetById), new { id = item.Id }, new ApiResponse<InventoryItemDto> { Data = item });
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<InventoryItemDto>> Update(int id, UpdateInventoryItemDto updateDto)
+        public async Task<ActionResult<ApiResponse<InventoryItemDto>>> Update(int id, UpdateInventoryDto updateDto)
         {
-            try
-            {
-                var inventoryItem = await _inventoryService.UpdateAsync(id, updateDto);
-                return Ok(inventoryItem);
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound();
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var item = await _inventoryService.UpdateAsync(id, updateDto);
+            return Ok(new ApiResponse<InventoryItemDto> { Data = item });
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult<ApiResponse<object>>> Delete(int id)
         {
-            try
-            {
-                await _inventoryService.DeleteAsync(id);
-                return NoContent();
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound();
-            }
+            await _inventoryService.DeleteAsync(id);
+            return Ok(new ApiResponse<object> { Success = true });
         }
 
         [HttpPatch("{id}/stock")]
-        public async Task<ActionResult> UpdateStockLevel(int id, [FromBody] int quantity)
+        public async Task<ActionResult<ApiResponse<object>>> UpdateStockLevel(int id, [FromBody] int quantity)
         {
             try
             {
                 await _inventoryService.UpdateStockLevelAsync(id, quantity);
-                return NoContent();
+                return Ok(new ApiResponse<object> { Success = true });
             }
             catch (KeyNotFoundException)
             {
-                return NotFound();
+                return NotFound(new ApiResponse<object> { Success = false, Message = "Item not found" });
             }
         }
     }

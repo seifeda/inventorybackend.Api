@@ -1,32 +1,50 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace inventorybackend.Api.DTOs.Inventory
 {
-    public class CreateInventoryDto : BaseInventoryDto
+    public class CreateInventoryDto
     {
         [Required]
         [StringLength(50)]
-        public new string SKU { get; set; }
+        [JsonPropertyName("sku")]
+        public string Sku { get; set; }
 
         [Required]
         [StringLength(100)]
-        public new string Name { get; set; }
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
 
         [StringLength(500)]
-        public new string Description { get; set; }
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
 
         [Required]
         [Range(0.01, double.MaxValue, ErrorMessage = "Cost price must be greater than 0")]
-        public new decimal CostPrice { get; set; }
+        [JsonPropertyName("costPrice")]
+        public decimal CostPrice { get; set; }
 
         [Required]
         [Range(0.01, double.MaxValue, ErrorMessage = "Selling price must be greater than 0")]
-        public new decimal SellingPrice { get; set; }
+        [JsonPropertyName("sellingPrice")]
+        public decimal SellingPrice { get; set; }
+
+        [Required]
+        [Range(0, int.MaxValue, ErrorMessage = "Quantity must be greater than or equal to 0")]
+        [JsonPropertyName("quantity")]
+        public int QuantityInStock { get; set; }
 
         [Required]
         [Range(0, int.MaxValue, ErrorMessage = "Reorder point must be greater than or equal to 0")]
-        public new int ReorderPoint { get; set; }
+        [JsonPropertyName("reorderPoint")]
+        public int ReorderPoint { get; set; }
+
         [Required]
-        public new int SupplierId { get; set; }
+        [JsonPropertyName("supplierId")]
+        public int SupplierId { get; set; }
+
+        [Required]
+        [JsonPropertyName("status")]
+        public string Status { get; set; } = "Active"; // Default to Active
     }
 }

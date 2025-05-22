@@ -12,8 +12,8 @@ using inventorybackend.Api.Data;
 namespace inventorybackend.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250518081108_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250522085840_supplier")]
+    partial class supplier
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -208,6 +208,87 @@ namespace inventorybackend.Api.Migrations
                     b.ToTable("PurchaseItems");
                 });
 
+            modelBuilder.Entity("inventorybackend.Api.Models.Sale", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CustomerEmail")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CustomerName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CustomerPhone")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("SaleDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Sales");
+                });
+
+            modelBuilder.Entity("inventorybackend.Api.Models.SaleItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("InventoryItemId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SaleId")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InventoryItemId");
+
+                    b.HasIndex("SaleId");
+
+                    b.ToTable("SaleItems");
+                });
+
             modelBuilder.Entity("inventorybackend.Api.Models.Supplier", b =>
                 {
                     b.Property<int>("Id")
@@ -293,12 +374,12 @@ namespace inventorybackend.Api.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 5, 18, 8, 11, 8, 143, DateTimeKind.Utc).AddTicks(3621),
+                            CreatedAt = new DateTime(2025, 5, 22, 8, 58, 40, 297, DateTimeKind.Utc).AddTicks(6908),
                             Email = "admin@example.com",
                             FirstName = "Admin",
                             IsActive = true,
                             LastName = "User",
-                            PasswordHash = "$2a$11$UX/6yIsPTUVGE8PsH50Nce1lAYUzGLUMiR/stpWmqi4SrO/NYheA6",
+                            PasswordHash = "$2a$11$TNFG38TuQQhxEDHKARrKP.xAWzixce0kXOVIURst6H924Dx7UbI3a",
                             Role = "Admin",
                             Username = "admin"
                         });
@@ -375,6 +456,25 @@ namespace inventorybackend.Api.Migrations
                     b.Navigation("Purchase");
                 });
 
+            modelBuilder.Entity("inventorybackend.Api.Models.SaleItem", b =>
+                {
+                    b.HasOne("inventorybackend.Api.Models.InventoryItem", "InventoryItem")
+                        .WithMany()
+                        .HasForeignKey("InventoryItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("inventorybackend.Api.Models.Sale", "Sale")
+                        .WithMany("SaleItems")
+                        .HasForeignKey("SaleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("InventoryItem");
+
+                    b.Navigation("Sale");
+                });
+
             modelBuilder.Entity("inventorybackend.Api.Models.InventoryItem", b =>
                 {
                     b.Navigation("OrderItems");
@@ -388,6 +488,11 @@ namespace inventorybackend.Api.Migrations
             modelBuilder.Entity("inventorybackend.Api.Models.Purchase", b =>
                 {
                     b.Navigation("PurchaseItems");
+                });
+
+            modelBuilder.Entity("inventorybackend.Api.Models.Sale", b =>
+                {
+                    b.Navigation("SaleItems");
                 });
 
             modelBuilder.Entity("inventorybackend.Api.Models.Supplier", b =>
